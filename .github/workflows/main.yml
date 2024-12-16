@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger the pipeline on push to main branch
+  pull_request:
+    branches:
+      - main  # Trigger the pipeline on pull requests to main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Set up Node.js environment (if using Node.js)
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # You can specify the Node.js version you use
+
+    # Install dependencies (for Node.js, use npm or yarn)
+    - name: Install dependencies
+      run: npm install
+
+    # Run tests (you can replace this with your specific test command)
+    - name: Run tests
+      run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    needs: build  # This job will run after the build job
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Deploy the code (replace this with your actual deploy script)
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production server..."
+        # Add commands here to deploy your application, such as:
+        # scp, rsync, or a deployment CLI (e.g., Heroku, AWS CLI, etc.)
